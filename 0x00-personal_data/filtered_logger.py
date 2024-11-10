@@ -12,14 +12,11 @@ import mysql.connector
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
-
 def filter_datum(fields: List[str], redaction: str, message: str,
-                 separator: str) -> str:
-    """ Replacing """
-    for f in fields:
-        message = re.sub(rf"{f}=(.*?)\{separator}",
-                         f'{f}={redaction}{separator}', message)
-    return message
+        separator: str) -> str:
+    """Replaces sensitive fields with a redaction string."""
+    pattern = rf"({'|'.join(fields)})=(.*?)\{separator}"
+    return re.sub(pattern, lambda m: f"{m.group(1)}={redaction}{separator}", message)
 
 
 class RedactingFormatter(logging.Formatter):
