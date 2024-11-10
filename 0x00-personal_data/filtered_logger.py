@@ -4,6 +4,7 @@
 from typing import List
 import logging
 import re
+import mysql.connector
 from mysql.connector import MySQLConnection
 import os
 
@@ -32,7 +33,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> connection.MySQLConnection:
+def get_db() -> mysql.connector.connection.MySQLConnection:
     """
     Connect to mysql server with environmental vars
     """
