@@ -1,38 +1,50 @@
 #!/usr/bin/env python3
 """
-    Auth Class
+Auth class
 """
-    
+
+from tabnanny import check
 from flask import request
-from typing import List, TypeVar
+from typing import TypeVar, List
+User = TypeVar('User')
+
 
 class Auth:
-    """ A class to manage the API authentication"""
-    
+    """
+    a class to manage the API authentication
+    """
+
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """ Returns False - path and excluded_paths"""
-        if path is None or not excluded_paths or len(excluded_paths) == 0:
+        """
+        returns False - path and excluded_paths
+        """
+        check = path
+        if path is None or excluded_paths is None or len(excluded_paths) == 0:
             return True
-        if not path.endswith('/'):
-            path += '/'
-            
-        normalized_excluded_paths = [ep if ep.endswith('/') else ep + '/' for ep in excluded_paths]
-        
-        for ep in normalized_excluded_paths:
-            if ep.endswith('*'):
-                prefix =ep[:-1]
-                if path.startswith(prefix):
-                    return False
-            elif path == excluded_paths:
+        if path[-1] != "/":
+            check += "/"
+        if check in excluded_paths or path in excluded_paths:
+            return False
+        with_stars = filter(
+            lambda p: p.endswith("*"),
+            excluded_paths
+        )
+        for p in with_stars:
+            strip = p[:-1]
+            if path.startswith(strip):
                 return False
         return True
-    
+
     def authorization_header(self, request=None) -> str:
-        """ Returns None - request """
-        if request is None or "Authorization" not in request.headers:
+        """
+        returns None - request
+        """
+        if request is None:
             return None
-        return request.headers.get('Authorization')
-    
-    def current_user(self, request=None) -> TypeVar('User'):
-        """ Returns None - request """
+        return request.headers.get("Authorization")
+
+    def current_user(self, request=None) -> User:
+        """
+        returns None - request
+        """
         return None

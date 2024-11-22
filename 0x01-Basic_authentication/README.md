@@ -1,42 +1,27 @@
-# Simple API
+0x01. Basic authentication
+==========================
 
-Simple HTTP API for playing with `User` model.
+Resources
+---------
 
+**Read or watch**:
 
-## Files
+-   [REST API Authentication Mechanisms](https://alx-intranet.hbtn.io/rltoken/ssg5umgsMk5jKM8WRHk2Ug "REST API Authentication Mechanisms")
+-   [Base64 in Python](https://alx-intranet.hbtn.io/rltoken/RpaPRyKx1rdHgRSUyuPfeg "Base64 in Python")
+-   [HTTP header Authorization](https://alx-intranet.hbtn.io/rltoken/WlARq8tQPUGQq5VphLKM4w "HTTP header Authorization")
+-   [Flask](https://alx-intranet.hbtn.io/rltoken/HG5WXgSja5kMa29fbMd9Aw "Flask")
+-   [Base64 - concept](https://alx-intranet.hbtn.io/rltoken/br6Rp4iMaOce6EAC-JQnOw "Base64 - concept")
 
-### `models/`
-
-- `base.py`: base of all models of the API - handle serialization to file
-- `user.py`: user model
-
-### `api/v1`
-
-- `app.py`: entry point of the API
-- `views/index.py`: basic endpoints of the API: `/status` and `/stats`
-- `views/users.py`: all users endpoints
-
-
-## Setup
-
-```
-$ pip3 install -r requirements.txt
-```
-
-
-## Run
-
-```
-$ API_HOST=0.0.0.0 API_PORT=5000 python3 -m api.v1.app
-```
-
-
-## Routes
-
-- `GET /api/v1/status`: returns the status of the API
-- `GET /api/v1/stats`: returns some stats of the API
-- `GET /api/v1/users`: returns the list of users
-- `GET /api/v1/users/:id`: returns an user based on the ID
-- `DELETE /api/v1/users/:id`: deletes an user based on the ID
-- `POST /api/v1/users`: creates a new user (JSON parameters: `email`, `password`, `last_name` (optional) and `first_name` (optional))
-- `PUT /api/v1/users/:id`: updates an user based on the ID (JSON parameters: `last_name` and `first_name`)
+## Description
+How to implement basic authentication
+## Tasks
+* [README.md](README.md)
+* [api](api)
+* [main_0.py](main_0.py)
+* [main_1.py](main_1.py)
+* [main_2.py](main_2.py)
+* [main_3.py](main_3.py)
+* [main_4.py](main_4.py)
+* [main_6.py](main_6.py)
+* [models](models)
+* [requirements.txt](requirements.txt)
