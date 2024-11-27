@@ -13,16 +13,16 @@ def login():
     email = request.form.get('email')
     if not email:
         return make_response(jsonify({"error": "email missing"}), 400)
-    
+
     password = request.form.get('password')
     if not password:
         return make_response(jsonify({"error": "password missing"}), 400)
-    
+
     try:
         users = User.search({"email": email})
     except Exception as e:
         return make_response(jsonify({"error": "server error"}), 500)
-    
+
     if not users:
         return make_response(jsonify({"error": "no user found for this email"}), 404)
     from api.v1.app import auth
@@ -33,5 +33,5 @@ def login():
             respose = make_response(user.to_json())
             respose.set_cookie(session_name, session_id)
             return respose
-        
+
     return make_response(jsonify({"error": "wrong password"}), 401)
