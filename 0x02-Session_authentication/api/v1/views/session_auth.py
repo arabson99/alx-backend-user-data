@@ -24,7 +24,7 @@ def login():
         return make_response(jsonify({"error": "server error"}), 500)
 
     if not users:
-        return make_response(jsonify({"error": "no user found for this email"}), 404)
+        return jsonify({"error": "no user found for this email"}), 404
     from api.v1.app import auth
     for user in users:
         if user.is_valid_password(password):
