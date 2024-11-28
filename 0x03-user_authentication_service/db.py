@@ -44,3 +44,18 @@ class DB:
             raise NoResultFound
         except InvalidRequestError:
             raise InvalidRequestError
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """ Updates User base on user_id and arbitrary keyword args"""
+        try:
+            user = self.find_user_by(id=user_id)
+        except NoResultFound:
+            raise ValueError
+
+        for key, value in kwargs.items():
+            if hasattr(user, key):
+                setattr(user, key, value)
+            else:
+                raise ValueError
+
+        self._session.commit()
