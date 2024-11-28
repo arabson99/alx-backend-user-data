@@ -34,8 +34,9 @@ class DB:
         self._session.commit()
         return new_user
 
-    def find_user_by(self, **kwargs: str) -> User:
-        """Returns the first row found in the users table based on keyword args"""
+    def find_user_by(self, **kwargs) -> User:
+        """Returns the first row found in the users
+        table based on keyword args"""
         try:
             user = self._session.query(User).filter_by(**kwargs).one()
             return user
