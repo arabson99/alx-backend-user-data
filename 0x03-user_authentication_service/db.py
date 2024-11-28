@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
+from sqlalchemy.exc import InvalidRequestError
 
 from user import Base, User
 
@@ -32,3 +33,11 @@ class DB:
         self._session.add(new_user)
         self._session.commit()
         return new_user
+
+    def find_user_by(self, **kwargs: str) -> User:
+        """Returns the first row found in the users table based on keyword args"""
+        try:
+            user = self._session.query(User).filter_by(**kwargs).first()
+            return user
+        except TypeError:
+            raise InvalidRequestError
