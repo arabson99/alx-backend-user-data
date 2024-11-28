@@ -5,6 +5,7 @@ from flask import Flask, jsonify
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def home():
     """ return a JSON payload of the form"""
