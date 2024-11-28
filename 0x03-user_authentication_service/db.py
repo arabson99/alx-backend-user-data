@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import InvalidRequestError
-
+from sqlalchemy.exc import NoResultFound
 from user import Base, User
 
 
@@ -37,7 +37,9 @@ class DB:
     def find_user_by(self, **kwargs: str) -> User:
         """Returns the first row found in the users table based on keyword args"""
         try:
-            user = self._session.query(User).filter_by(**kwargs).first()
+            user = self._session.query(User).filter_by(**kwargs).one()
             return user
-        except TypeError:
+        except NoResultFound:
+            raise NoResultFound
+        except InvalidRequestError:
             raise InvalidRequestError
