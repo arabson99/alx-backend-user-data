@@ -59,9 +59,24 @@ def logout():
 
     try:
         user = AUTH.get_user_from_session_id(session_id)
-        if user:
-            AUTH.destroy_session(user.id)
-            return redirect('/')
+        AUTH.destroy_session(user.id)
+        return redirect('/')
+    except NoResultFound:
+        abort(403)
+
+
+@app.route('/profile', methods=["GET"], strict_slashes=False)
+def profile():
+    """Find a user and display it's profile"""
+    session_id = request.cookies.get("session_id", None)
+    if not session_id:
+        abort(403)
+
+    try:
+        user = AUTH.get_user_from_session_id(session_id)
+        if user is None:
+            abort(403)
+        return jsonify({"email": user.email}), 200
     except NoResultFound:
         abort(403)
 
