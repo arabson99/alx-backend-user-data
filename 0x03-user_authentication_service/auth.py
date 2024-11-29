@@ -82,7 +82,7 @@ class Auth:
     def get_reset_password_token(self, email: str) -> str:
         """Resets a user password."""
         if email is None:
-            return None
+            raise ValueError
 
         try:
             user = self._db.find_user_by(email=email)
