@@ -49,13 +49,14 @@ def login():
         response.set_cookie("session_id", session_id)
         return response
 
+
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout():
     """Log out"""
     session_id = request.cookies.get("session_id", None)
     if not session_id:
         abort(403)
-        
+
     try:
         user = AUTH.get_user_from_session_id(session_id)
         if user:
@@ -63,7 +64,7 @@ def logout():
             return redirect('/')
     except NoResultFound:
         abort(403)
-    
-    
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
