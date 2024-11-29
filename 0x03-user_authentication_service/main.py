@@ -1,19 +1,28 @@
 #!/usr/bin/env python3
-
+""" Principal function """
 import requests
 
-""" End-to-end integration test
-"""
+URL = "http://localhost:5000"
+EMAIL = "guillaume@holberton.io"
+PASSWD = "b4l0u"
+NEW_PASSWD = "t4rt1fl3tt3"
 
 
 def register_user(email: str, password: str) -> None:
-    """ Tests register_user
+    """ Register User
+
+        args:
+            email: to look
+            password: to look
+
+        return
+            assert of the values
     """
-    register_user = {
+    reg_user = {
         "email": email,
-        "password": password
+        "password": password,
     }
-    req = requests.post(f'{URL}/users', data=register_user)
+    req = requests.post(f'{URL}/users', data=reg_user)
 
     response = {"email": EMAIL, "message": "user created"}
     assert req.status_code == 200
@@ -21,42 +30,73 @@ def register_user(email: str, password: str) -> None:
 
 
 def log_in_wrong_password(email: str, password: str) -> None:
-    """ Test logging in with wrong password
+    """ Login with error
+
+        args:
+            email: to look
+            password: to look
+
+        return
+            assert of the values
     """
-    register_user = {
+    reg_user = {
         "email": email,
-        "password": password
+        "password": password,
     }
-    req = requests.post(f'{URL}/sessions', data=register_user)
+    req = requests.post(f'{URL}/sessions', data=reg_user)
 
-    assert req.status_code == 200
-
-
-def log_in(email: str, password: str) -> str:
-    """ Test log-in
-    """
-    register_user = {
-        "email": email,
-        "password": password
-    }
-    req = requests.post(f'{URL}/sessions', data=register_user)
-
-    response = {"email": EMAIL, "message": "logged in"}
-    assert req.status_code == 200
-    assert req.json() = response
-    return req.cookies.get("session_id")
+    assert req.status_code == 401
 
 
 def profile_unlogged() -> None:
-    """ Test profile unlogged
+    """ Login with error
+
+        args:
+            email: to look
+            password: to look
+
+        return
+            assert of the values
     """
     req = requests.delete(f'{URL}/sessions')
 
     assert req.status_code == 403
 
 
+def log_in(email: str, password: str) -> str:
+    """ Login correctly
+
+        args:
+            email: to look
+            password: to look
+
+        return
+            assert of the values
+    """
+    reg_user = {
+        "email": email,
+        "password": password,
+    }
+    req = requests.post(f'{URL}/sessions', data=reg_user)
+
+    response = {
+        "email": email,
+        "message": "logged in"
+    }
+    assert req.status_code == 200
+    assert req.json() == response
+
+    return (req.cookies['session_id'])
+
+
 def profile_logged(session_id: str) -> None:
-    """ Test profile logged
+    """ Profile logged
+
+        args:
+            session_id: Session identificator
+
+        return
+            assert of the values
     """
     cookie = {
         "session_id": session_id
@@ -72,57 +112,67 @@ def profile_logged(session_id: str) -> None:
 
 
 def log_out(session_id: str) -> None:
-    """ Test logout
+    """ Logout profile
+
+        args:
+            session_id: Session identificator
+
+        return
+            assert of the values
     """
     cookie = {
         "session_id": session_id
     }
     req = requests.delete(f'{URL}/sessions', cookies=cookie)
 
-    response = {
-        "email": EMAIL,
-    }
-
     assert req.status_code == 200
 
 
 def reset_password_token(email: str) -> str:
-    """ Test reset password
+    """ Reset password token
+
+        args:
+            email: Email to identify user
+
+        return
+            assert of the values
     """
-    register_user = {
+    reg_user = {
         "email": email
     }
-    req = requests.post(f'{URL}/reset_password', data=register_user)
+    req = requests.post(f'{URL}/reset_password', data=reg_user)
 
-    reset_token = req.json().get('reset_token', None)
-    response = {"email": email, "reset_token": reset_token}
+    token = req.json().get('reset_token', None)
+    response = {"email": email, "reset_token": token}
 
     assert req.status_code == 200
     assert req.json() == response
 
-    return reset_token
+    return token
 
 
 def update_password(email: str, reset_token: str, new_password: str) -> None:
-    """ Test
+    """ Reset password token
+
+        args:
+            email: Email to identify user
+            reset_token: Identifier to reset the password
+            new_password: To change
+
+        return
+            assert of the values
     """
-    register_user = {
+    reg_user = {
         "email": email,
         "reset_token": reset_token,
         "new_password": new_password,
     }
-    req = requests.put(f'{URL}/reset_password', data=register_user)
+    req = requests.put(f'{URL}/reset_password', data=reg_user)
 
     response = {"email": email, "message": "Password updated"}
 
     assert req.status_code == 200
     assert req.json() == response
-
-
-URL = "http://localhost:5000"
-EMAIL = "guillaume@holberton.io"
-PASSWD = "b4l0u"
-NEW_PASSWD = "t4rt1fl3tt3"
 
 
 if __name__ == "__main__":
