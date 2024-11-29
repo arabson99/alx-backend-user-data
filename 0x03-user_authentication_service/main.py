@@ -17,7 +17,7 @@ def register_user(email: str, password: str) -> None:
 
     response = {"email": EMAIL, "message": "user created"}
     assert req.status_code == 200
-    assert req.json() = response
+    assert req.json() == response
 
 
 def log_in_wrong_password(email: str, password: str) -> None:
