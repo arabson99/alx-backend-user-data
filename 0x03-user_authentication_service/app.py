@@ -105,7 +105,7 @@ def update_password() -> str:
     except ValueError:
         abort(403)
 
-    message = {"message": "OK"}
+    message = {"email": email, "message": "Password updated"}
     return jsonify(message), 200
 
 
